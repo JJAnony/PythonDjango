@@ -1,0 +1,21 @@
+{% extends "page.html" %}
+
+{% block content %}
+<h2 class="text-center p-3">Agendamentos</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Titulo</th>
+        <th scope="col">Data Evento</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for event in events %}
+    <tr>
+        <td>{{event.title}}</td>
+        <td>{{event.get_event_date}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
