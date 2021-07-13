@@ -1,14 +1,40 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from core.models import Event
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 
 # Create your views here.
 
-def hello(requests, name):
+def hello(request, name):
     return HttpResponse('<h1>Hello {}</h1>'.format(name))
 
 
-def list_events(requests):
-    event = Event.objects.filter(user=requests.user)
+def login_user(request):
+    return render(request, 'login.html')
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('/')
+
+
+def submit(request):
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        else:
+            messages.error(request, 'Usuario ou Senha Invalidos')
+    return redirect('/login')
+
+
+@login_required(login_url='/login/')
+def list_events(request):
+    event = Event.objects.filter(user=request.user)
     response = {'events': event}
-    return render(requests, 'schedule.html', response)
+    return render(request, 'schedule.html', response)
