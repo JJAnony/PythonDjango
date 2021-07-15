@@ -2,11 +2,15 @@
 
 {% block content %}
 <h2 class="text-center p-3">Agendamentos</h2>
+<div class="float-end">
+    <a class="btn btn-success" href="event">Adicionar</a>
+</div>
 <table class="table">
     <thead>
     <tr>
         <th scope="col">Titulo</th>
         <th scope="col">Data Evento</th>
+        <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
@@ -14,6 +18,14 @@
     <tr>
         <td>{{event.title}}</td>
         <td>{{event.get_event_date}}</td>
+        <td>
+            <div class="float-end">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-primary">Editar</button>
+                    <button type="button" class="btn btn-danger">Excluir</button>
+                </div>
+            </div>
+        </td>
     </tr>
     {% endfor %}
     </tbody>

@@ -10,5 +10,7 @@ urlpatterns = [
     path('login/submit/', views.submit),
     path('logout/', views.logout_user),
     path('schedule/', views.list_events),
+    path('schedule/event/', views.event),
+    path('schedule/event/submit/', views.subimt_event),
     path('', RedirectView.as_view(url='/schedule/'))
 ]
