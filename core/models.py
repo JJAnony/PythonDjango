@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 # Create your models here.
 
@@ -18,3 +19,6 @@ class Event(models.Model):
 
     def get_input_event_date(self):
         return self.event_date.strftime('%Y-%m-%dT%H:%M')
+
+    def get_event_late(self):
+        return self.event_date < datetime.now()

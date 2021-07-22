@@ -1,8 +1,11 @@
 from django.shortcuts import render, HttpResponse, redirect
+from _datetime import datetime, timedelta
+
 from core.models import Event
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.http.response import Http404, JsonResponse
 
 
 # Create your views here.
@@ -35,9 +38,15 @@ def submit(request):
 
 @login_required(login_url='/login/')
 def list_events(request):
-    event = Event.objects.filter(user=request.user)
+    event_date = datetime.now() - timedelta(hours=4)
+    event = Event.objects.filter(user=request.user, event_date__gt=event_date)
     response = {'events': event}
     return render(request, 'schedule.html', response)
+
+@login_required(login_url='/login/')
+def json_events(request):
+    event = Event.objects.filter(user=request.user).values('id', 'title')
+    return JsonResponse(list(event), safe=False)
 
 
 @login_required(login_url='/login/')
@@ -74,4 +83,6 @@ def delete_event(request, id_event):
     event = Event.objects.get(id=id_event)
     if request.user == event.user:
         event.delete()
-    return redirect('/schedule')
+        return redirect('/schedule')
+    else:
+        raise Http404()

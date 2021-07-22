@@ -15,7 +15,7 @@
     </thead>
     <tbody>
     {% for event in events %}
-    <tr>
+    <tr {% if event.get_event_late %} style="color:red" {% endif %}>
         <td>{{event.title}}</td>
         <td>{{event.get_event_date}}</td>
         <td>
